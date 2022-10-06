@@ -1,0 +1,4 @@
+{
+    "mongoURI": "mongodb+srv://root:Pass1234@cluster0.jdkdr2t.mongodb.net/?retryWrites=true&w=majority",
+    "jwtSecret": "sadique_bhai_xoss"
+}
