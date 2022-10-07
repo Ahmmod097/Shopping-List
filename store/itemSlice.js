@@ -21,8 +21,7 @@ export const deleteItem = createAsyncThunk("item/deleteItem", async (name) => {
   return axios
     .delete(`http://localhost:3000/api/a/items/${name}`)
     .then((response) => {
-      response.data.payload.itemName = name;
-      console.log(response.data);
+      response.data.itemName = name;
       return response.data;
     });
 });
@@ -45,6 +44,5 @@ export const itemSlice = createSlice({
     });
   },
 });
-// export const { getItems, createItem, deleteItem } = itemSlice.actions;
 
 export default itemSlice.reducer;
