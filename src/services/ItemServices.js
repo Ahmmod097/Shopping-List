@@ -2,6 +2,8 @@ import Item from "../model/Item";
 
 const createItem = async (req, res) => {
   const { name } = req.body;
+  const { id } = req.user;
+
   const newItem = await Item.findOneAndUpdate(
     { name },
     {
@@ -32,6 +34,7 @@ const getItem = async (req, res) => {
 
 const deleteItem = async (req, res) => {
   const { name } = req.query;
+  const { id } = req.user;
   
   const deleteItem = await Item.findOneAndDelete({
     name,
