@@ -12,17 +12,30 @@ import {
 import LoginModal from "../auth/LoginModal";
 import Logout from "../auth/Logout";
 import RegisterModal from "../auth/RegisterModal";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function AppNavbar() {
   const [isOpen, setIsOpen] = useState(false);
+  let isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  let isLogin = typeof window !== "undefined" && localStorage.getItem("token") ? true : false;
 
   const handleToggle = () => setIsOpen(!isOpen);
+  
+  let userName = useSelector((state) => state.auth.userName);
 
-  let isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  useEffect(() => {
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+  }, [isLogin]);
 
   const authLinks = (
     <Fragment>
+      <NavItem>
+        <div className="navbar-text mb-1">
+          <strong>{userName ? `Welcome ${userName}` : ""}</strong>
+        </div>
+      </NavItem>
       <NavItem>
         <Logout />
       </NavItem>
@@ -39,7 +52,6 @@ export default function AppNavbar() {
       </NavItem>
     </Fragment>
   );
-  useEffect(() => {}, [isAuthenticated]);
   
   return (
     <div>
@@ -48,7 +60,7 @@ export default function AppNavbar() {
         <NavbarToggler onClick={handleToggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ms-auto" navbar>
-            {isAuthenticated ? authLinks : guestLinks}
+            {isLogin ? authLinks : guestLinks}
           </Nav>
         </Collapse>
       </Navbar>

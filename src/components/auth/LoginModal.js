@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Button,
   Modal,
@@ -11,15 +11,24 @@ import {
   Input,
   NavLink,
 } from "reactstrap";
-
-import { login } from "../../../store/authSlice";
+import { changeErrorState, login } from "../../../store/authSlice";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function LoginModal() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+  let isError = useSelector((state) => state.auth.isError);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if(isError){
+      toast.error("There are some errors in your form submission");
+      dispatch(changeErrorState());
+    }
+  }, [isError]);
 
   const handleModal = () => {
     setModalIsOpen(!modalIsOpen);
@@ -80,6 +89,7 @@ export default function LoginModal() {
           </Form>
         </ModalBody>
       </Modal>
+      <ToastContainer/>
     </div>
   );
 }

@@ -7,7 +7,7 @@ export default function userHandler(req, res) {
   switch (method) {
     case "POST":
       auth(req, res, createItem);
-      return createItem(req,res);
+      return createItem(req, res);
 
     default:
       res.setHeader("Allow", ["POST"]);

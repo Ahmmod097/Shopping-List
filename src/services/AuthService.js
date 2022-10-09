@@ -77,6 +77,7 @@ const login = async (req, res) => {
     message: "Ok",
     result: {
       token: await generateJwtToken(user._id.toString()),
+      name: user.name,
     },
   });
 };

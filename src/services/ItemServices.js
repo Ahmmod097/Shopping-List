@@ -1,8 +1,9 @@
 import Item from "../model/Item";
 
 const createItem = async (req, res) => {
+  console.log("First time")
   const { name } = req.body;
-  
+
   const { id } = req.user;
   
   if(!id){

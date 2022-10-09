@@ -17,6 +17,7 @@ export default function ItemModal() {
   const [name, setName] = useState(null);
   const dispatch = useDispatch();
   let isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  let isLogin = typeof window !== "undefined" && localStorage.getItem("token") ? true : false;
 
   const handleModal = () => {
     setModalIsOpen(!modalIsOpen);
@@ -36,7 +37,7 @@ export default function ItemModal() {
 
   return (
     <div>
-      {isAuthenticated ? (
+      {isLogin ? (
         <Button
           color="dark"
           style={{ marginBottom: "2rem" }}

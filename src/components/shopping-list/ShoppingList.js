@@ -4,16 +4,23 @@ import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { deleteItem, getItems } from "../../../store/itemSlice";
 
+
 export default function ShoppingList() {
   let items = useSelector((state) => state.item.items);
   let isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-
-  useEffect(() => {}, [isAuthenticated]);
+  let isLogin = typeof window !== "undefined" && localStorage.getItem("token") ? true : false;
 
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(getItems());
   }, []);
+
+  useEffect(() => {
+  }, [isLogin]);
+
+  useEffect(() => {
+  }, [isAuthenticated]);
 
   const handleDeleteItems = (name) => {
     dispatch(deleteItem(name));
@@ -26,7 +33,7 @@ export default function ShoppingList() {
           {items.map(({ _id, name }) => (
             <CSSTransition key={_id} timeout={500} classNames="fade">
               <ListGroupItem>
-                {isAuthenticated ? (
+                {isLogin ? (
                   <Button
                     className="remove-btn"
                     color="danger"
