@@ -13,48 +13,39 @@ export const register = createAsyncThunk("auth/register", async (body) => {
     .then((response) => response.data);
 });
 
-// export const createItem = createAsyncThunk("item/createItem", async (item) => {
-//   return axios
-//     .post("http://localhost:3000/api/a/items", item)
-//     .then((response) => response.data);
-// });
+export const login = createAsyncThunk("auth/login", async (body) => {
+  return axios
+    .post("http://localhost:3000/api/p/auth/login", body)
+    .then((response) => response.data);
+});
 
-// export const deleteItem = createAsyncThunk("item/deleteItem", async (name) => {
-//   return axios
-//     .delete(`http://localhost:3000/api/a/items/${name}`)
-//     .then((response) => {
-//       response.data.itemName = name;
-//       return response.data;
-//     });
-// });
+export const logout = createAsyncThunk("auth/logout", async () => {
+  return localStorage.getItem("token");
+});
 
 export const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducer: {
-    logout: () => {
-        localStorage.setItem("token", "");
-    }
-  },
   extraReducers: (builder) => {
     builder.addCase(register.fulfilled, (state, action) => {
       localStorage.setItem("token", action.payload.result.token);
     });
     builder.addCase(register.rejected, (state, action) => {
-        localStorage.setItem("token", "");
-      });
-    // builder.addCase(createItem.fulfilled, (state, action) => {
-    //   state.items = [action.payload.item, ...state.items];
-    // });
-    // builder.addCase(deleteItem.fulfilled, (state, action) => {
-    //   console.log("In reducer", action.payload);
-    //   state.items = state.items.filter(
-    //     (item) => item.name !== action.payload.itemName
-    //   );
-    // });
+      localStorage.setItem("token", "");
+    });
+    builder.addCase(login.fulfilled, (state, action) => {
+      state.isAuthenticated = true;
+      localStorage.setItem("token", action.payload.result.token);
+    });
+    builder.addCase(login.rejected, (state) => {
+      state.isAuthenticated = false;
+      localStorage.setItem("token", "");
+    });
+    builder.addCase(logout.fulfilled, (state, action) => {
+      state.isAuthenticated = false;
+      localStorage.setItem("token", "");
+     });
   },
 });
-
-export const { logout } = authSlice.actions
 
 export default authSlice.reducer;

@@ -12,14 +12,20 @@ export const getItems = createAsyncThunk("item/getItems", async () => {
 });
 
 export const createItem = createAsyncThunk("item/createItem", async (item) => {
+  let token = localStorage.getItem("token");
   return axios
-    .post("http://localhost:3000/api/a/items", item)
+    .post("http://localhost:3000/api/a/items", item, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
     .then((response) => response.data);
 });
 
 export const deleteItem = createAsyncThunk("item/deleteItem", async (name) => {
+  let token = localStorage.getItem("token");
   return axios
-    .delete(`http://localhost:3000/api/a/items/${name}`)
+    .delete(`http://localhost:3000/api/a/items/${name}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
     .then((response) => {
       response.data.itemName = name;
       return response.data;
@@ -37,7 +43,6 @@ export const itemSlice = createSlice({
       state.items = [action.payload.item, ...state.items];
     });
     builder.addCase(deleteItem.fulfilled, (state, action) => {
-      console.log("In reducer", action.payload);
       state.items = state.items.filter(
         (item) => item.name !== action.payload.itemName
       );

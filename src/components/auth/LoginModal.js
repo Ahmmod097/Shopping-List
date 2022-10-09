@@ -12,11 +12,10 @@ import {
   NavLink,
 } from "reactstrap";
 
-import { register } from "../../../store/authSlice";
+import { login } from "../../../store/authSlice";
 
-export default function RegisterModal() {
+export default function LoginModal() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
 
@@ -26,50 +25,36 @@ export default function RegisterModal() {
     setModalIsOpen(!modalIsOpen);
   };
 
-  const handleOnChangeName = (e) => {
-    setName(e.target.value );
-  };
-
   const handleOnChangeEmail = (e) => {
-    setEmail(e.target.value );
+    setEmail(e.target.value);
   };
 
   const handleOnChangePassword = (e) => {
-    setPassword( e.target.value );
+    setPassword(e.target.value);
   };
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    const registrationRequest = {
-      name,
+    const loginRequest = {
       email,
       password,
     };
-    
-    dispatch(register(registrationRequest));
+
+    dispatch(login(loginRequest));
     handleModal();
   };
 
   return (
     <div>
       <NavLink onClick={handleModal} href="#">
-        Register
+        Login
       </NavLink>
 
       <Modal isOpen={modalIsOpen} toggle={handleModal}>
-        <ModalHeader toggle={handleModal}>Registration Form</ModalHeader>
+        <ModalHeader toggle={handleModal}>Login Form</ModalHeader>
         <ModalBody>
           <Form onSubmit={handleOnSubmit}>
             <FormGroup>
-              <Label for="name">Name</Label>
-              <Input
-                type="text"
-                name="name"
-                id="name"
-                placeholder="Name"
-                className="mb-3"
-                onChange={handleOnChangeName}
-              />
               <Label for="email">Email</Label>
               <Input
                 type="email"
@@ -89,7 +74,7 @@ export default function RegisterModal() {
                 onChange={handleOnChangePassword}
               />
               <Button color="dark" style={{ marginTop: "2rem" }} block>
-                Register
+                Login
               </Button>
             </FormGroup>
           </Form>

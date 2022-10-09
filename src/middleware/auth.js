@@ -7,6 +7,7 @@ export function auth(req, res, next) {
   if (!token) {
     res.status(401).json({ message: "Unauthorized operation" });
   }
+  
   try {
     const decoded = jwt.verify(token, config.get("jwtSecret"));
     req.user = decoded;

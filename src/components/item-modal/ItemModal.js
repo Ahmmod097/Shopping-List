@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Button,
   Modal,
@@ -16,32 +16,35 @@ export default function ItemModal() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [name, setName] = useState(null);
   const dispatch = useDispatch();
+  let isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const handleModal = () => {
     setModalIsOpen(!modalIsOpen);
   };
 
   const handleOnChange = (e) => {
-    console.log("In on chage",e.target.name);
+    console.log("In on chage", e.target.name);
     setName({ [e.target.name]: e.target.value });
   };
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    console.log("In on click",name);
+    console.log("In on click", name);
     dispatch(createItem(name));
     handleModal();
   };
 
   return (
     <div>
-      <Button
-        color="dark"
-        style={{ marginBottom: "2rem" }}
-        onClick={handleModal}
-      >
-        Add Item
-      </Button>
+      {isAuthenticated ? (
+        <Button
+          color="dark"
+          style={{ marginBottom: "2rem" }}
+          onClick={handleModal}
+        >
+          Add Item
+        </Button>
+      ) : <h4 className='mb-3 ml-4'>Please log in to manage items</h4>}
 
       <Modal isOpen={modalIsOpen} toggle={handleModal}>
         <ModalHeader toggle={handleModal}>Add To Shopping List</ModalHeader>
@@ -66,4 +69,3 @@ export default function ItemModal() {
     </div>
   );
 }
-

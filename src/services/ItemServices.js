@@ -2,7 +2,12 @@ import Item from "../model/Item";
 
 const createItem = async (req, res) => {
   const { name } = req.body;
+  
   const { id } = req.user;
+  
+  if(!id){
+    res.status(401).json({ message: "Unauthorized operation" });
+  }
 
   const newItem = await Item.findOneAndUpdate(
     { name },

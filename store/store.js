@@ -7,4 +7,5 @@ export const store = configureStore({
     item: itemReducer,
     auth: authReducer
   },
+
 });
